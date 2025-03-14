@@ -26,6 +26,8 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Prepare
+	mkdir -p $(PKG_BUILD_DIR)
+	$(CP) ./ $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
@@ -44,7 +46,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/root/etc/init.d/ac $(1)/etc/init.d/ac
 
-	# 如果有更多的文件和目录需要安装，请在这里添加相应的命令
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

@@ -1,4 +1,0 @@
-config 'ac' 'settings'
-    option 'enabled' '1'
-    option 'interval' '5'
-    option 'loglevel' 'info'

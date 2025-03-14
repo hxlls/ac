@@ -1,11 +1,11 @@
 include $(TOPDIR)/rules.mk
 
-LUCI_TITLE:=AC
-LUCI_PKGARCH:=all
-LUCI_DEPENDS:=+luci-base +uhttpd
+LUCI_TITLE:=LuCI Support for AC
+LUCI_DESCRIPTION:=AC Management Interface
+LUCI_DEPENDS:=+luci
 
 PKG_NAME:=luci-app-ac
-PKG_VERSION:=1.0
+PKG_VERSION:=1.0.0
 PKG_RELEASE:=1
 
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)
@@ -17,38 +17,34 @@ define Package/$(PKG_NAME)
   CATEGORY:=LuCI
   SUBMENU:=3. Applications
   TITLE:=$(LUCI_TITLE)
-  PKGARCH:=$(LUCI_PKGARCH)
   DEPENDS:=$(LUCI_DEPENDS)
+  PKGARCH:=all
 endef
 
 define Package/$(PKG_NAME)/description
-  This is a LuCI application for AC.
+  $(LUCI_DESCRIPTION)
 endef
 
 define Build/Prepare
-  mkdir -p $(PKG_BUILD_DIR)
-  $(CP) ./luasrc/* $(PKG_BUILD_DIR)/
-endef
-
-define Build/Configure
 endef
 
 define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-  $(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller
-  $(INSTALL_DATA) $(PKG_BUILD_DIR)/controller/ac.lua $(1)/usr/lib/lua/luci/controller/ac.lua
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/luasrc/controller/ac.lua $(1)/usr/lib/lua/luci/controller/ac.lua
 
-  $(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/ac
-  $(INSTALL_DATA) $(PKG_BUILD_DIR)/view/ac/* $(1)/usr/lib/lua/luci/view/ac/
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/ac
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/luasrc/view/ac/*.htm $(1)/usr/lib/lua/luci/view/ac/
 
-  $(INSTALL_DIR) $(1)/etc/init.d
-  $(INSTALL_BIN) ./root/etc/init.d/ac $(1)/etc/init.d/ac
-  
-  $(INSTALL_DIR) $(1)/etc/config
-  $(INSTALL_DATA) ./root/etc/config/ac $(1)/etc/config/ac
-  
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/root/etc/config/ac $(1)/etc/config/ac
+
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/root/etc/init.d/ac $(1)/etc/init.d/ac
+
+	# 如果有更多的文件和目录需要安装，请在这里添加相应的命令
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

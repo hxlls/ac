@@ -41,10 +41,13 @@ define Package/$(PKG_NAME)/install
   $(INSTALL_DATA) $(PKG_BUILD_DIR)/controller/ac.lua $(1)/usr/lib/lua/luci/controller/ac.lua
 
   $(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/ac
-  $(INSTALL_DATA) $(PKG_BUILD_DIR)/view/* $(1)/usr/lib/lua/luci/view/ac/
+  $(INSTALL_DATA) $(PKG_BUILD_DIR)/view/ac/* $(1)/usr/lib/lua/luci/view/ac/
 
   $(INSTALL_DIR) $(1)/etc/init.d
   $(INSTALL_BIN) ./root/etc/init.d/ac $(1)/etc/init.d/ac
+  
+  $(INSTALL_DIR) $(1)/etc/config
+  $(INSTALL_DATA) ./root/etc/config/ac $(1)/etc/config/ac
   
 endef
 

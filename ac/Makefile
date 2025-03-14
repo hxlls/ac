@@ -37,11 +37,18 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/controller/ac.lua $(1)/usr/lib/lua/luci/controller/ac.lua
+  $(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller
+  $(INSTALL_DATA) $(PKG_BUILD_DIR)/controller/ac.lua $(1)/usr/lib/lua/luci/controller/ac.lua
 
-	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/ac
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/view/* $(1)/usr/lib/lua/luci/view/ac/
+  $(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/ac
+  $(INSTALL_DATA) $(PKG_BUILD_DIR)/view/* $(1)/usr/lib/lua/luci/view/ac/
+
+  $(INSTALL_DIR) $(1)/etc/init.d
+  $(INSTALL_BIN) ./root/etc/init.d/ac $(1)/etc/init.d/ac
+  
+  # Enable and start the service
+  $(1)/etc/init.d/ac enable
+  $(1)/etc/init.d/ac start
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
